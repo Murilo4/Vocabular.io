@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   /// Loads, initializes, and configures the background video asset using VideoPlayer.
   Future<void> _loadVideo() async {
     // Define the asset path for the video
-    String videoAssetPath = 'https://videocdn.cdnpk.net/videos/ffd2eac5-01da-5e0b-bae1-636bc26210c7/horizontal/previews/clear/large.mp4?token=exp=1749754374~hmac=487f844a28c1c4c02ad7677497581cf5335bf92b339dda4bd96d95feea7ec92e'; // Your video
+    String videoAssetPath = 'assets/videos/background_video.mp4'; // Your video
 
 
     // Create the video controller from the asset
@@ -55,36 +55,25 @@ class _HomePageState extends State<HomePage> {
     try {
       // Initialize the VideoPlayerController and then update state
       await _videoPlayerController.initialize().then((_) async {
-        // Ensure the first frame is shown after the video is initialized
-        // Set volume to 0.0 to allow autoplay on web browsers.
-        // Browsers often block autoplay for videos with sound without user interaction.
         await _videoPlayerController.setVolume(0.0);
-        print('VideoPlayerController volume set to 0.0 for autoplay.');
-
         // Set the video to loop
         await _videoPlayerController.setLooping(true);
-        print('VideoPlayerController set to loop.');
-
         // Start playing the video
         await _videoPlayerController.play();
-        print('VideoPlayerController started playing.');
 
         setState(() {
           _isControllerInitialized = true; // Mark as initialized successfully
         });
-        print('Video player initialization and setup complete.');
       });
 
       // Add a listener to the videoPlayerController to observe its state changes
       _videoPlayerController.addListener(() {
         if (_videoPlayerController.value.hasError) {
-          print('VideoPlayer Error: ${_videoPlayerController.value.errorDescription}');
         }
         // You can add more detailed logging here if needed, but setState is handled by the .then above
       });
 
     } catch (e) {
-      print("Error during video player initialization or playback setup: $e");
       setState(() {
         _isControllerInitialized = false; // Mark as not initialized on error
       });
