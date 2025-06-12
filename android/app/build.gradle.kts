@@ -24,7 +24,7 @@ android {
         applicationId = "io.vocabular.vocabular_io"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 21 // <--- **Crucial change here: Explicitly setting minSdk to 21**
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

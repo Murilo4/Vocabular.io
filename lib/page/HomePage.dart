@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:vocabular_io/component/MessageButton.dart";
 // Importe a tela do jogo
-import 'package:vocabular_io/page/GamePageEasyMode.dart';
+import 'package:vocabular_io/page/GamePage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -68,16 +68,6 @@ class HomePage extends StatelessWidget {
                 const SizedBox(
                   height: 128,
                 ), // Espaçamento maior entre os botões
-                MessageButton(
-                  messageToDisplay: 'Difícil',
-                  buttonText: 'Difícil',
-                  width: buttonWidth,
-                  height: buttonHeight,
-                  backgroundColor: Colors.amber,
-                  textColor: Colors.black,
-                  fontSize: buttonFontSize.clamp(26, 44),
-                  onPressed: () => _navigateToGame(context, 'dificil'),
-                ),
               ],
             ),
           ),
