@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
   void _navigateToGame(BuildContext context, String difficulty) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => GamePage(difficulty: difficulty)),
+      MaterialPageRoute(builder: (context) => GamePage()),
     );
   }
 

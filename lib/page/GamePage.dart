@@ -41,9 +41,7 @@ const palavras = {
 };
 
 class GamePage extends StatefulWidget {
-  final String difficulty;
-
-  const GamePage({super.key, required this.difficulty});
+  const GamePage({super.key});
 
   @override
   _GamePageState createState() => _GamePageState();
@@ -172,7 +170,7 @@ class _GamePageState extends State<GamePage> {
     // Avaliação das letras
     List<Color> colors = List.filled(
       _wordLength,
-      const Color(0xFF8B8991),
+      const Color.fromARGB(255, 197, 196, 197),
     ); // cinza para erro
     List<bool> used = List.filled(_wordLength, false);
 
@@ -399,7 +397,7 @@ class _GamePageState extends State<GamePage> {
                   child: Text(
                     'Parabéns!',
                     style: TextStyle(
-                      color: Color(0xFF4FB356), // verde
+                      color: Color.fromARGB(255, 82, 221, 92), // verde
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -412,7 +410,7 @@ class _GamePageState extends State<GamePage> {
                     Text(
                       _fullWord.toUpperCase(),
                       style: const TextStyle(
-                        color: Color(0xFF6591B5), // azul
+                        color: Color.fromARGB(255, 88, 164, 226), // azul
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
@@ -423,7 +421,7 @@ class _GamePageState extends State<GamePage> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Color(0xFF4FB356),
+                        color: Color.fromARGB(255, 79, 214, 88),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -524,7 +522,7 @@ class _GamePageState extends State<GamePage> {
                     Text(
                       _fullWord.toUpperCase(),
                       style: const TextStyle(
-                        color: Color(0xFF6591B5), // azul
+                        color: Color.fromARGB(255, 84, 157, 216), // azul
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
@@ -538,7 +536,12 @@ class _GamePageState extends State<GamePage> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            245,
+                            55,
+                            41,
+                          ),
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
@@ -551,7 +554,12 @@ class _GamePageState extends State<GamePage> {
                       const SizedBox(width: 16),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6591B5),
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            96,
+                            167,
+                            224,
+                          ),
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
@@ -632,207 +640,255 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Game')),
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final screenWidth = constraints.maxWidth;
-          final screenHeight = constraints.maxHeight;
-          final isSmallScreen = screenWidth < 600;
+      // Cor de fundo suave que não atrapalha o conteúdo
+      backgroundColor: const Color.fromARGB(
+        255,
+        36,
+        180,
+        247,
+      ), // azul escuro neutro, ajuste se quiser
+      body: Stack(
+        children: [
+          // Botão de voltar para a tela inicial
+          Positioned(
+            top: 32,
+            left: 16,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 32),
+              tooltip: 'Voltar para o início',
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          ),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final screenWidth = constraints.maxWidth;
+              final screenHeight = constraints.maxHeight;
+              final isSmallScreen = screenWidth < 600;
 
-          // Ajuste para level >= 3 (palavras de 6 letras ou mais)
-          final bool isLevel3OrMore = _wordLength >= 6;
-          final double keyboardAreaWidth = screenWidth * 1.5;
-          final keyGap = isSmallScreen ? 2.0 : 6.0;
-          final keyboardButtonFontSize =
-              isLevel3OrMore
-                  ? (isSmallScreen ? 11.0 : 15.0)
-                  : (isSmallScreen ? 13.0 : 19.0);
+              // Ajuste para level >= 3 (palavras de 6 letras ou mais)
+              final bool isLevel3OrMore = _wordLength >= 6;
+              final double keyboardAreaWidth = screenWidth * 1.5;
+              final keyGap = isSmallScreen ? 2.0 : 6.0;
+              final keyboardButtonFontSize =
+                  isLevel3OrMore
+                      ? (isSmallScreen ? 11.0 : 15.0)
+                      : (isSmallScreen ? 13.0 : 19.0);
 
-          // Layout do teclado conforme a imagem
-          const row1 = 'Q W E R T Y U I O P';
-          const row2 = ' A S D F G H J K L DEL';
-          const row3 = ' Z X C V B N M ENTER';
+              // Layout do teclado conforme a imagem
+              const row1 = 'Q W E R T Y U I O P';
+              const row2 = ' A S D F G H J K L DEL';
+              const row3 = ' Z X C V B N M ENTER';
 
-          return Center(
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: screenHeight * 0.8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: isSmallScreen ? 8 : 16,
-                      ),
-                      child: Text(
-                        'level ${_wordLength - 3}',
-                        style: TextStyle(
-                          fontSize:
-                              isLevel3OrMore
-                                  ? (isSmallScreen ? 13 : 18)
-                                  : (isSmallScreen ? 16 : 22),
-                          fontWeight: FontWeight.bold,
+              return Center(
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: screenHeight * 0.8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: isSmallScreen ? 8 : 16,
+                          ),
+                          child: Text(
+                            'level ${_wordLength - 3}',
+                            style: TextStyle(
+                              fontSize:
+                                  isLevel3OrMore
+                                      ? (isSmallScreen ? 13 : 18)
+                                      : (isSmallScreen ? 16 : 22),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    // Barra de progresso (3 pontos)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(3, (i) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6.0,
-                            ),
-                            child: Icon(
-                              Icons.circle,
-                              size: isSmallScreen ? 16 : 22,
-                              color:
-                                  i < _levelProgress
-                                      ? const Color(0xFF4FB356)
-                                      : Colors.grey[400],
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
-                    // Linhas de tentativas
-                    Column(
-                      children: List.generate(
-                        maxAttempts,
-                        (attempt) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        // Barra de progresso (3 pontos)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(_wordLength, (index) {
-                              bool isActive = attempt == _currentAttempt;
-                              // Ajuste tamanho dos quadrados e fonte para level 3 e 4
-                              double textFieldSize;
-                              double textFontSize;
-                              if (_wordLength == 6) {
-                                textFieldSize = min(screenWidth * 0.12, 44);
-                                textFontSize = textFieldSize * 0.48;
-                              } else if (_wordLength >= 7) {
-                                textFieldSize = min(screenWidth * 0.11, 38);
-                                textFontSize =
-                                    textFieldSize * 0.38; // menor para level 4+
-                              } else {
-                                textFieldSize = min(screenWidth * 0.15, 60);
-                                textFontSize = textFieldSize * 0.6;
-                              }
+                            children: List.generate(3, (i) {
                               return Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: SizedBox(
-                                  width: textFieldSize,
-                                  height: textFieldSize,
-                                  child: TextField(
-                                    controller:
-                                        _attemptControllers[attempt][index],
-                                    textAlign: TextAlign.center,
-                                    maxLength: 1,
-                                    readOnly: true,
-                                    enabled: isActive,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: _attemptColors[attempt][index],
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color:
-                                              isActive &&
-                                                      _selectedFieldIndex ==
-                                                          index
-                                                  ? Colors.blue
-                                                  : Colors.grey,
-                                        ),
-                                      ),
-                                      counterText: '',
-                                    ),
-                                    onTap:
-                                        isActive
-                                            ? () {
-                                              setState(() {
-                                                _selectedFieldIndex = index;
-                                              });
-                                            }
-                                            : null,
-                                    style: TextStyle(
-                                      fontSize: textFontSize,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.0,
-                                    ),
-                                  ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6.0,
+                                ),
+                                child: Icon(
+                                  Icons.circle,
+                                  size: isSmallScreen ? 16 : 22,
+                                  color:
+                                      i < _levelProgress
+                                          ? const Color.fromARGB(
+                                            255,
+                                            60,
+                                            196,
+                                            69,
+                                          )
+                                          : const Color.fromARGB(
+                                            255,
+                                            223,
+                                            223,
+                                            223,
+                                          ),
                                 ),
                               );
                             }),
                           ),
                         ),
-                      ),
-                    ),
-                    SizedBox(height: isSmallScreen ? 8 : 16),
-                    // Teclado
-                    SizedBox(
-                      width: keyboardAreaWidth,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Primeira linha do teclado
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: _buildKeyboardRow(
-                                row1.split(' '),
-                                keyboardButtonFontSize,
-                                keyGap,
-                                screenWidth,
-                                isSmallScreen,
+                        // Linhas de tentativas
+                        Column(
+                          children: List.generate(
+                            maxAttempts,
+                            (attempt) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 2.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(_wordLength, (index) {
+                                  bool isActive = attempt == _currentAttempt;
+                                  // Ajuste tamanho dos quadrados e fonte para level 3 e 4
+                                  double textFieldSize;
+                                  double textFontSize;
+                                  if (_wordLength == 6) {
+                                    textFieldSize = min(screenWidth * 0.12, 44);
+                                    textFontSize = textFieldSize * 0.48;
+                                  } else if (_wordLength >= 7) {
+                                    textFieldSize = min(screenWidth * 0.11, 38);
+                                    textFontSize =
+                                        textFieldSize *
+                                        0.38; // menor para level 4+
+                                  } else {
+                                    textFieldSize = min(screenWidth * 0.15, 60);
+                                    textFontSize = textFieldSize * 0.6;
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: SizedBox(
+                                      width: textFieldSize,
+                                      height: textFieldSize,
+                                      child: TextField(
+                                        controller:
+                                            _attemptControllers[attempt][index],
+                                        textAlign: TextAlign.center,
+                                        maxLength: 1,
+                                        readOnly: true,
+                                        enabled: isActive,
+                                        decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor:
+                                              _attemptColors[attempt][index],
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  isActive &&
+                                                          _selectedFieldIndex ==
+                                                              index
+                                                      ? const Color.fromARGB(
+                                                        255,
+                                                        24,
+                                                        142,
+                                                        238,
+                                                      )
+                                                      : const Color.fromARGB(
+                                                        255,
+                                                        255,
+                                                        255,
+                                                        255,
+                                                      ),
+                                            ),
+                                          ),
+                                          counterText: '',
+                                        ),
+                                        onTap:
+                                            isActive
+                                                ? () {
+                                                  setState(() {
+                                                    _selectedFieldIndex = index;
+                                                  });
+                                                }
+                                                : null,
+                                        style: TextStyle(
+                                          fontSize: textFontSize,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
                               ),
                             ),
                           ),
-                          SizedBox(height: keyGap),
-                          // Segunda linha do teclado
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: _buildKeyboardRow(
-                                row2.split(' '),
-                                keyboardButtonFontSize,
-                                keyGap,
-                                screenWidth,
-                                isSmallScreen,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: keyGap),
-                          // Terceira linha do teclado
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(width: isSmallScreen ? 45.0 : 70.0),
-                                ..._buildKeyboardRow(
-                                  row3.split(' '),
-                                  keyboardButtonFontSize,
-                                  keyGap,
-                                  screenWidth,
-                                  isSmallScreen,
+                        ),
+                        SizedBox(height: isSmallScreen ? 8 : 16),
+                        // Teclado
+                        SizedBox(
+                          width: keyboardAreaWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Primeira linha do teclado
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: _buildKeyboardRow(
+                                    row1.split(' '),
+                                    keyboardButtonFontSize,
+                                    keyGap,
+                                    screenWidth,
+                                    isSmallScreen,
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(height: keyGap),
+                              // Segunda linha do teclado
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: _buildKeyboardRow(
+                                    row2.split(' '),
+                                    keyboardButtonFontSize,
+                                    keyGap,
+                                    screenWidth,
+                                    isSmallScreen,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: keyGap),
+                              // Terceira linha do teclado
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: isSmallScreen ? 45.0 : 70.0,
+                                    ),
+                                    ..._buildKeyboardRow(
+                                      row3.split(' '),
+                                      keyboardButtonFontSize,
+                                      keyGap,
+                                      screenWidth,
+                                      isSmallScreen,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          );
-        }, // This is the correct closing brace for the builder function
+              );
+            }, // This is the correct closing brace for the builder function
+          ),
+        ],
       ),
     );
   }
@@ -865,12 +921,12 @@ class _GamePageState extends State<GamePage> {
       }
 
       // Cor da tecla: azul se já tentada, senão padrão
-      Color keyColor = const Color(0xFF8B8B8D);
+      Color keyColor = const Color.fromARGB(255, 153, 153, 153);
       if (_usedLetters.contains(key.toUpperCase()) &&
           key != 'DEL' &&
           key != 'ENTER' &&
           key != ' ') {
-        keyColor = const Color(0xFF6591B5);
+        keyColor = const Color.fromARGB(255, 80, 160, 226);
       }
 
       return Padding(
@@ -884,7 +940,7 @@ class _GamePageState extends State<GamePage> {
               padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.black, width: 1),
+                side: const BorderSide(color: Colors.black, width: 1.2),
               ),
               elevation: 0,
             ),
