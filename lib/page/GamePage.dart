@@ -57,7 +57,6 @@ class _GamePageState extends State<GamePage> {
   int _levelProgress = 0;
   // Palavras já usadas neste nível (para não repetir)
   final Set<String> _usedWordsInLevel = {};
-
   // Remover o static const int maxAttempts = 6;
   // Cada linha é uma tentativa, cada tentativa é uma lista de controllers
   List<List<TextEditingController>> _attemptControllers = [];
@@ -97,6 +96,8 @@ class _GamePageState extends State<GamePage> {
         levelWords
             .where((w) => !_usedWordsInLevel.contains(w['word']!))
             .toList();
+    // Se houver palavras disponíveis, escolhe uma aleatória
+  
     if (availableWords.isNotEmpty) {
       final random = Random();
       final wordObj = availableWords[random.nextInt(availableWords.length)];
@@ -104,12 +105,14 @@ class _GamePageState extends State<GamePage> {
       _fullWord = wordObj['fullWord']!;
       _usedWordsInLevel.add(_word);
     } else {
+      // Se não houver palavras disponíveis, reinicia o nível
       _usedWordsInLevel.clear();
       final wordObj = levelWords[Random().nextInt(levelWords.length)];
       _word = wordObj['word']!;
       _fullWord = wordObj['fullWord']!;
       _usedWordsInLevel.add(_word);
     }
+
     _attemptControllers = List.generate(
       maxAttempts,
       (_) => List.generate(_wordLength, (index) => TextEditingController()),
@@ -140,6 +143,7 @@ class _GamePageState extends State<GamePage> {
         .replaceAll(RegExp(r'[Ç]'), 'C');
   }
 
+  // Função para tocar som
   Future<void> _playSound(String soundName) async {
     try {
       await _audioPlayer.play(
@@ -151,6 +155,8 @@ class _GamePageState extends State<GamePage> {
     }
   }
 
+  // Função para verificar a palavra digitada
+  // e atualizar o estado do jogo
   void _checkWord() {
     String guessedWord =
         _attemptControllers[_currentAttempt]
@@ -195,6 +201,7 @@ class _GamePageState extends State<GamePage> {
       }
     }
 
+    // Atualizar as cores da tentativa atual
     setState(() {
       _attemptColors[_currentAttempt] = colors;
       if (guessedWord == targetWord) {
@@ -220,6 +227,8 @@ class _GamePageState extends State<GamePage> {
     });
   }
 
+  // Função para mostrar o modal de sucesso
+  // com animação de fogos de artifício
   void _showSuccessModal({required bool levelCompleted}) {
     // Play sound with a delay to ensure modal is fully presented
     Future.delayed(const Duration(milliseconds: 200), () {
@@ -283,6 +292,7 @@ class _GamePageState extends State<GamePage> {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    // Mensagem de progresso do nível
                     if (!levelCompleted)
                       Text(
                         'Falta${3 - _levelProgress == 1 ? '' : 'm'} ${3 - _levelProgress} palavra${3 - _levelProgress == 1 ? '' : 's'} para avançar!',
@@ -353,6 +363,7 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  // Função para mostrar o modal de finalização do jogo
   void _showFinalLevelModal() {
     showDialog(
       context: context,
@@ -451,6 +462,7 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  // Função para mostrar o modal de falha
   void _showFailModal() {
     showDialog(
       context: context,
@@ -458,7 +470,7 @@ class _GamePageState extends State<GamePage> {
       builder: (context) {
         return Stack(
           children: [
-            // 4 gifs em posições diferentes (substitua os nomes pelos seus arquivos)
+            // 4 gifs em posições diferentes
             Positioned(
               top: 20,
               left: 20,
@@ -583,6 +595,7 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  // Função para lidar com a tecla pressionada
   void _onKeyPressed(String letter) {
     _playSound('keyboard_click'); // Som ao clicar no teclado
     setState(() {
@@ -616,6 +629,7 @@ class _GamePageState extends State<GamePage> {
     });
   }
 
+  // Função para lidar com o backspace
   void _onBackspacePressed() {
     _playSound('delete_click'); // Som ao clicar no backspace
     setState(() {
@@ -630,6 +644,7 @@ class _GamePageState extends State<GamePage> {
     });
   }
 
+  // Função para obter a letra exibida no campo
   String _getDisplayLetter(int attempt, int index) {
     final text = _attemptControllers[attempt][index].text;
     if (text.isEmpty) return '';
@@ -637,6 +652,7 @@ class _GamePageState extends State<GamePage> {
     return text;
   }
 
+  // Função para construir uma linha do teclado
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -671,6 +687,7 @@ class _GamePageState extends State<GamePage> {
               final bool isLevel3OrMore = _wordLength >= 6;
               final double keyboardAreaWidth = screenWidth * 1.5;
               final keyGap = isSmallScreen ? 2.0 : 6.0;
+              // Tamanho da fonte dos botões do teclado
               final keyboardButtonFontSize =
                   isLevel3OrMore
                       ? (isSmallScreen ? 11.0 : 15.0)
@@ -680,7 +697,6 @@ class _GamePageState extends State<GamePage> {
               const row1 = 'Q W E R T Y U I O P';
               const row2 = ' A S D F G H J K L DEL';
               const row3 = ' Z X C V B N M ENTER';
-
               return Center(
                 child: SingleChildScrollView(
                   child: ConstrainedBox(

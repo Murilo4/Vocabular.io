@@ -5,7 +5,7 @@ import 'package:vocabular_io/page/GamePage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
+  // Método para navegar para a tela do jogo
   void _navigateToGame(BuildContext context, String difficulty) {
     Navigator.push(
       context,
@@ -14,14 +14,16 @@ class HomePage extends StatelessWidget {
   }
 
   @override
+  // Método build para construir a interface do usuário
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final double titleFontSize = size.width * 0.25; // ainda mais destaque
-    final double buttonWidth = size.width * 0.90; // botões bem largos
-    final double buttonHeight = size.height * 0.18; // botões bem altos
-    final double buttonFontSize = size.width * 0.15; // fonte maior
+    final double titleFontSize = size.width * 0.25; 
+    final double buttonWidth = size.width * 0.90; 
+    final double buttonHeight = size.height * 0.18; 
+    final double buttonFontSize = size.width * 0.15;
 
     return Scaffold(
+      // AppBar com título estilizado
       body: Center(
         child: SizedBox(
           width: double.infinity,

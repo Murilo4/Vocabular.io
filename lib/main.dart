@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vocabular_io/page/GamePage.dart'; // Make sure this path is correct
+import 'package:vocabular_io/page/GamePage.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:math'; // Adicione esta linha
@@ -10,7 +10,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
