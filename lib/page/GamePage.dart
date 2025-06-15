@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:audioplayers/audioplayers.dart'; // Importe o pacote
+import 'package:audioplayers/audioplayers.dart';
 
 // Definição das palavras por nível
 const palavras = {
@@ -230,7 +230,6 @@ class _GamePageState extends State<GamePage> {
   // Função para mostrar o modal de sucesso
   // com animação de fogos de artifício
   void _showSuccessModal({required bool levelCompleted}) {
-    // Play sound with a delay to ensure modal is fully presented
     Future.delayed(const Duration(milliseconds: 200), () {
       _playSound('correct');
     });
@@ -369,7 +368,6 @@ class _GamePageState extends State<GamePage> {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        // Play sound with a delay to ensure modal is fully presented
         Future.delayed(const Duration(milliseconds: 200), () {
           _playSound('correct');
           _playSound('game_completed');
@@ -521,7 +519,7 @@ class _GamePageState extends State<GamePage> {
                   child: Text(
                     'Poxa!',
                     style: TextStyle(
-                      color: Color(0xFFD02020), // vermelho
+                      color: Color(0xFFD02020),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -534,7 +532,7 @@ class _GamePageState extends State<GamePage> {
                     Text(
                       _fullWord.toUpperCase(),
                       style: const TextStyle(
-                        color: Color.fromARGB(255, 84, 157, 216), // azul
+                        color: Color.fromARGB(255, 84, 157, 216),
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
@@ -648,7 +646,6 @@ class _GamePageState extends State<GamePage> {
   String _getDisplayLetter(int attempt, int index) {
     final text = _attemptControllers[attempt][index].text;
     if (text.isEmpty) return '';
-    // O texto já está uppercase e, se necessário, com acento
     return text;
   }
 
@@ -662,7 +659,7 @@ class _GamePageState extends State<GamePage> {
         36,
         180,
         247,
-      ), // azul escuro neutro, ajuste se quiser
+      ), 
       body: Stack(
         children: [
           // Botão de voltar para a tela inicial
@@ -683,7 +680,6 @@ class _GamePageState extends State<GamePage> {
               final screenHeight = constraints.maxHeight;
               final isSmallScreen = screenWidth < 600;
 
-              // Ajuste para level >= 3 (palavras de 6 letras ou mais)
               final bool isLevel3OrMore = _wordLength >= 6;
               final double keyboardAreaWidth = screenWidth * 1.5;
               final keyGap = isSmallScreen ? 2.0 : 6.0;
@@ -693,7 +689,7 @@ class _GamePageState extends State<GamePage> {
                       ? (isSmallScreen ? 11.0 : 15.0)
                       : (isSmallScreen ? 13.0 : 19.0);
 
-              // Layout do teclado conforme a imagem
+              // Layout do teclado
               const row1 = 'Q W E R T Y U I O P';
               const row2 = ' A S D F G H J K L DEL';
               const row3 = ' Z X C V B N M ENTER';
@@ -763,7 +759,7 @@ class _GamePageState extends State<GamePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: List.generate(_wordLength, (index) {
                                   bool isActive = attempt == _currentAttempt;
-                                  // Ajuste tamanho dos quadrados e fonte para level 3 e 4
+                                  // Ajuste tamanho dos campos e fonte para level 3 e 4
                                   double textFieldSize;
                                   double textFontSize;
                                   if (_wordLength == 6) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vocabular_io/page/GamePage.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:video_player/video_player.dart';
-import 'dart:math'; // Adicione esta linha
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -49,12 +49,10 @@ class _HomePageState extends State<HomePage>
       duration: const Duration(milliseconds: 700), // Mais rápido
     )..repeat();
   }
-
   /// Loads, initializes, and configures the background video asset using VideoPlayer.
   Future<void> _loadVideo() async {
-    // Define the asset path for the video
-    String videoAssetPath = 'assets/videos/background_video.mp4'; // Your video
-
+    //  asset path for the video
+    String videoAssetPath = 'assets/videos/background_video.mp4';
     // Create the video controller from the asset
     _videoPlayerController = VideoPlayerController.asset(videoAssetPath);
     print('Video controller created for asset: $videoAssetPath');
@@ -67,16 +65,14 @@ class _HomePageState extends State<HomePage>
         await _videoPlayerController.setLooping(true);
         // Start playing the video
         await _videoPlayerController.play();
-
         setState(() {
           _isControllerInitialized = true; // Mark as initialized successfully
         });
       });
 
-      // Add a listener to the videoPlayerController to observe its state changes
+      // listener to the videoPlayerController to observe its state changes
       _videoPlayerController.addListener(() {
         if (_videoPlayerController.value.hasError) {}
-        // You can add more detailed logging here if needed, but setState is handled by the .then above
       });
     } catch (e) {
       setState(() {
@@ -92,13 +88,12 @@ class _HomePageState extends State<HomePage>
     _waveController.dispose();
     super.dispose();
   }
-
   /// Plays a sound effect from assets.
   Future<void> _playSound(String soundName) async {
     try {
       await _audioPlayer.play(
         AssetSource('sounds/$soundName.mp3'),
-        volume: 0.2, // Adjust volume as needed
+        volume: 0.2,
       );
     } catch (e) {
       print("Error playing sound: $e");
@@ -141,7 +136,6 @@ class _HomePageState extends State<HomePage>
                       mainAxisSize: MainAxisSize.min,
                       children: List.generate(text.length, (i) {
                         final char = text[i];
-                        // Onda mais natural e rápida
                         final double offsetY = 8 * sin(-2 * pi * _waveController.value + i * 0.3);
                         return Transform.translate(
                           offset: Offset(0, offsetY),
@@ -187,7 +181,7 @@ Route _createRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => GamePage(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0); // Começa da direita
+      const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 
@@ -197,7 +191,7 @@ Route _createRoute() {
       ).chain(CurveTween(curve: Curves.ease));
       return SlideTransition(position: animation.drive(tween), child: child);
     },
-    transitionDuration: Duration(milliseconds: 1200), // Mais lento
+    transitionDuration: Duration(milliseconds: 1200),
   );
 }        
 
